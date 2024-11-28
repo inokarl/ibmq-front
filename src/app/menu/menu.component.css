@@ -1,0 +1,19 @@
+.menu {
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+    padding: 10px;
+    background-color: #f1f1f1;
+  }
+  
+  button.mat-button {
+    text-transform: none;
+    font-size: 16px;
+  }
+  
+  button.mat-button.active {
+    font-weight: bold;
+    color: #1976d2;
+    border-bottom: 2px solid #1976d2;
+  }
+  
