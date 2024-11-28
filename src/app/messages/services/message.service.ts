@@ -3,12 +3,14 @@ import { Injectable } from '@angular/core';
 import { Message } from '../models/message';
 import { Page } from '../../common/page';
 import { Observable } from 'rxjs';
+import { BASE_URL } from '../../common/network.config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MessageService {
-  private apiUrl = 'http://localhost:8080/messages/all';  
+  
+  private apiUrl = `${BASE_URL}/messages/all`;
 
   constructor(private http: HttpClient) {}
 

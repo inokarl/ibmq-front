@@ -2,30 +2,45 @@ import { Component, OnInit } from '@angular/core';
 import { Message } from '../../models/message';
 import { MessageService } from '../../services/message.service';
 import { MatTableModule } from '@angular/material/table';
-import { HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
+import { Page } from '../../../common/page';
 
 @Component({
   selector: 'app-message-list',
   standalone: true,
-  imports: [MatTableModule],
+  imports: [MatTableModule, CommonModule],
   templateUrl: './message-list.component.html',
   styleUrl: './message-list.component.css'
 })
 export class MessageListComponent implements OnInit {
 
   messages: Message[] = [];
+  headers: string[] = [];
+  focusedMessage: Message | undefined = undefined;
   page: number = 0;
   orderByOldest: boolean = false;
 
-  displayedColumns: string[] = ['content'];
 
   constructor(private messageService: MessageService) {
   }
 
-  ngOnInit(): void {
-    this.messageService.getMessages(this.page, this.orderByOldest).subscribe((page) => {
-      this.messages = page.content;
-    })
+  openMessageDetails(message: Message): void {
+    this.focusedMessage = message;
   }
-
+  
+  closeModal(): void {
+    this.focusedMessage = undefined;
+  }
+  
+  ngOnInit(): void {
+    this.messageService.getMessages(this.page, this.orderByOldest).subscribe({
+      next: (page: Page<Message>) => {
+        this.messages = page.content;
+        if(this.messages.length != 0) {
+          this.headers = Object.keys(this.messages[0]).slice(1);
+        }
+      },
+      error: (error) => {}
+    });
+  }
 }

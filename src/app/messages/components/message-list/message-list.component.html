@@ -1,16 +1,50 @@
-<p>message-list works!</p>
+<div class="container mx-auto p-4">
+    <h1><strong>Messages view</strong></h1>
+    @if (this.messages.length !== 0) {
+        <table class="table-auto border-collapse border border-gray-200 w-full text-left">
+            <thead>
+              <tr class="bg-gray-100">
+                  @for (header of headers; track $index) {
+                      <th class="border border-gray-300 px-4 py-2">
+                          {{ header }}
+                      </th>
+                  }
+              </tr>
+            </thead>
+            <!-- Dynamic Rows -->
+            <tbody>
+              @for (message of messages; track $index) {
+                  <tr (click)="openMessageDetails(message)" class="bg-gray-50 hover:bg-gray-100">
+                      <td class="border border-gray-300 px-4 py-2">
+                          {{ message.content }}
+                      </td>
+                      <td class="border border-gray-300 px-4 py-2">{{ message.receivedAt}}</td>
+                  </tr>
+              }
+            </tbody>
+        </table>
+    } @else {
+        <div>
+            <h2>
+                No messages available here.
+            </h2>
+        </div>
+    }
 
-<table mat-table [dataSource]="messages">
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef> ID </th>
-      <td mat-cell *matCellDef="let message"> {{message.id}} </td>
-    </ng-container>
-  
-    <ng-container matColumnDef="content">
-      <th mat-header-cell *matHeaderCellDef> Content </th>
-      <td mat-cell *matCellDef="let message"> {{message.content}} </td>
-    </ng-container>
-  
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
+    <!-- Modal -->
+    @if (focusedMessage) {
+        <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+            <div class="bg-white p-6 rounded shadow-lg w-1/3">
+                <h2 class="text-xl font-bold mb-4">Message Details</h2>
+                <p><strong>Content:</strong> {{ focusedMessage.content }}</p>
+                <p><strong>date:</strong> {{ focusedMessage.receivedAt | date }}</p>
+                <button
+                    (click)="closeModal()"
+                    class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                >
+                    Close
+                </button>
+            </div>
+        </div>
+    }
+</div>

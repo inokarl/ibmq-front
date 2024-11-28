@@ -1,5 +1,4 @@
-export interface Message {
-    id: string;         
+export interface Message {        
     content: string;    
-    createdAt: string;
+    receivedAt: string;
 }
